@@ -1,0 +1,38 @@
+name: QEXO_FRIEND_JSON
+
+on:
+  watch:
+    types: [started]
+  schedule:
+    - cron: "0 */3 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.8"
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Python script
+        run: python qexo/Qexo_to_JSON.py
+
+      - name: Commit & Push
+        uses: action-x/commit@v2.9
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          push-branch: "main"
+          force-push: "true"
+          commit-message: "Update Frineds"
+          name: github-actions[bot]
+          email: github-actions[bot]@noreply.github.com
