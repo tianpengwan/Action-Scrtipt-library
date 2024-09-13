@@ -1,7 +1,7 @@
 import requests 
 import json
 
-url = "https://hexo.uyoahz.cn/pub/friends/"
+url = "https://hexoadmin.20010501.xyz/pub/friends/"
 response = requests.get(url)
 data = response.json()['data']  
 
